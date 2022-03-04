@@ -2,6 +2,7 @@ const debug = require('debug')('photoapp:user_controller');
 const { matchedData, validationResult } = require('express-validator');
 const models = require('../models');
 
+// CREATE
 const store = async (req, res) => {
     // check for any validation errors
     const errors = validationResult(req);
@@ -32,6 +33,19 @@ const store = async (req, res) => {
     }
 }
 
+// READ
+const index = async (req, res) => {
+	const all_users = await models.user_model.fetchAll();
+
+	res.send({
+		status: 'successful',
+		data: {
+			users: all_users
+		}
+	});
+}
+
 module.exports = {
-    store
+    store,
+    index
 }
