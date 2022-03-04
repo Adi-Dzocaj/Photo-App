@@ -6,6 +6,6 @@ router.get('/', (req, res, next) => {
 	res.send({ success: true, data: { msg: 'oh, hi' }});
 });
 
-router.use('/example', require('./example'));
+router.use('/users', require('./user_route'));
 
 module.exports = router;
