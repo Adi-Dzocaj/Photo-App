@@ -1,4 +1,4 @@
-const debug = require('debug')('photoapp:example_controller');
+const debug = require('debug')('photoapp:user_controller');
 const { matchedData, validationResult } = require('express-validator');
 const models = require('../models');
 
