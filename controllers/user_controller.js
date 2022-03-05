@@ -33,19 +33,18 @@ const store = async (req, res) => {
     }
 }
 
-// READ
+// READ - GET PROFILE
 const index = async (req, res) => {
-	const all_users = await models.user_model.fetchAll();
 
 	res.send({
 		status: 'successful',
 		data: {
-			users: all_users
+			user: req.user
 		}
 	});
 }
 
 module.exports = {
     store,
-    index
+    index,
 }
