@@ -1,6 +1,7 @@
+const bcrypt = require('bcrypt');
 const debug = require('debug')('photoapp:register_controller');
-const { matchedData, validationResult } = require('express-validator')
-const models = require('../models')
+const { matchedData, validationResult } = require('express-validator');
+const models = require('../models');
 
 const register = async (req, res) => {
     // check for any validation errors
@@ -12,6 +13,17 @@ const register = async (req, res) => {
     // get only the validated data from the request
     const validData = matchedData(req);
 
+    // Generate a hash of validData.password
+    // Overwrite validData.password with the hash
+    try {
+        validData.password = await bcrypt.hash(validData.password, 10)
+    } catch(error) {
+        res.status(500).send({
+            status: 'error',
+            message: 'Exception thrown when hashing the password.',
+        });
+        throw error;
+    }
     try {
         const user = await new models.user_model(validData).save();
         debug("Created new user successfully: %O", user);
