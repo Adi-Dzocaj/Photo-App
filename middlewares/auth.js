@@ -44,9 +44,9 @@ const basic = async (req, res, next) => {
             data: 'Authorization failed',
         });
     }
-
-    req.user = user
     
+    req.user = user
+
     next();
 }
 

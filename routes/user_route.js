@@ -4,9 +4,6 @@ const userController = require('../controllers/user_controller')
 const userValidationRules = require('../validation/user_validation');
 const photoValidationRules = require('../validation/photo_validation')
 
-// CREATE
-router.post('/', userValidationRules.createRules, userController.createUser)
-
 // CREATE PHOTO
 router.post('/photos', photoValidationRules.createRules, userController.addPhoto)
 
