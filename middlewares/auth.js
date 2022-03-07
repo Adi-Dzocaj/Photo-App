@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const debug = require('debug')('photoapp:server');
 const { user_model } = require('../models');
 
@@ -36,8 +37,9 @@ const basic = async (req, res, next) => {
 
     // split decoded payload into "<email>:<password>"
     const [email, password] = decodedPayload.split(':'); // här splittas det som finns i decodedPayload och delas av med :
-
-    const user = await new user_model({email, password}).fetch({ require: false });
+    
+    // find the user that is being requested based on the email
+    const user = await new user_model({ email }).fetch({ require: false });
     if (!user) {
         return res.status(401).send({
             status: 'fail',
@@ -45,6 +47,19 @@ const basic = async (req, res, next) => {
         });
     }
     
+    // hash the incoming cleartext password that the user inputs using the salt from the database.
+    // also compare if the generated hash matches the database hash
+
+    const hash = user.get('password')
+    const result = await bcrypt.compare(password, hash);
+
+    if (!result) {
+        return res.status(401).send({
+            status: 'fail',
+            data: 'Authorization failed',
+        });
+    }
+
     req.user = user
 
     next();
