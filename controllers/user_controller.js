@@ -1,7 +1,6 @@
 const debug = require('debug')('photoapp:user_controller');
 const { matchedData, validationResult } = require('express-validator');
 const models = require('../models');
-const { user_model } = require('../models')
 
 // READ - GET USER
 const index = async (req, res) => {
@@ -15,9 +14,8 @@ const index = async (req, res) => {
 }
 
 // GET AUTHENTICATED USERS PHOTOS
-
 const getPhotos = async (req, res) => {
-    const user = await new user_model({ id: req.user.id }).fetch({ withRelated: ['photos'] });
+    const user = await models.user_model.fetchById(req.user.id, {withRelated: ['photos']});
 
     res.status(200).send({
         status: 'success',

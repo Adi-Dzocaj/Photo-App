@@ -1,11 +1,19 @@
-module.exports = (bookshelf) => {
-	return bookshelf.model('Photo', {
-		tableName: 'Photos',
-		users() {
-			return this.belongsTo('User');
-		},
-		albums() {
-			return this.belongsToMany('Album')
-		}
-	});
+module.exports = bookshelf => {
+    return bookshelf.model(
+        'Photo',
+        {
+            tableName: 'Photos',
+            albums() {
+                return this.belongsToMany('Album');
+            },
+            users() {
+                return this.belongsTo('User');
+            },
+        },
+        {
+            async fetchById(id, fetchOptions = {}) {
+                return await new this({ id }).fetch(fetchOptions);
+            },
+        }
+    );
 };
