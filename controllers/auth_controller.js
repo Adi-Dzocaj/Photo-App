@@ -3,6 +3,7 @@ const debug = require('debug')('photoapp:register_controller');
 const { matchedData, validationResult } = require('express-validator');
 const models = require('../models');
 
+// Registering new users
 const register = async (req, res) => {
     // check for any validation errors
     const errors = validationResult(req);
