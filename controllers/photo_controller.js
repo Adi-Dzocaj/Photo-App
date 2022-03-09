@@ -47,7 +47,52 @@ const addPhoto = async (req, res) => {
 	}
 };
 
+// PUT (update) a photo
+const updatePhoto = async (req, res) => {
+
+	const photoId = req.params.photoId;
+
+	// Make sure the photo exists
+	const photo = await new models.photo_model({ id: photoId }).fetch({ require: false })
+	if (!photo) {
+		debug("The photo to update could not be found. %o", { id: photoId });
+		res.status(404).send({
+			status: 'fail',
+			data: 'The requested photo could not be found',
+    });
+    return;
+	}
+
+	// check for any validation errors
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		return res.status(422).send({ status: 'fail', data: errors.array() });
+	}
+
+	// get only the validated data from the request
+	const validData = matchedData(req);
+
+	try {
+    await photo.save(validData);
+
+    res.send({
+    status: 'success',
+    data: {
+        photo
+	}});
+
+	} catch (error) {
+    res.status(500).send({
+		status: 'error',
+		message: 'Exception thrown in database when updating a new photo.',
+    });
+    throw error;
+	}
+}
+
 module.exports = {
     getPhotos,
-    addPhoto
+    addPhoto,
+	updatePhoto
 }

@@ -6,6 +6,13 @@ const createRules = [
 	body('comment').optional().isLength({ min: 3 })
 ];
 
+const updateRules = [
+	body('title').optional().isLength({ min: 3 }),
+	body('url').optional().isURL(),
+	body('comment').optional().isLength({ min: 3 })
+]
+
 module.exports = {
 	createRules,
+	updateRules
 };
