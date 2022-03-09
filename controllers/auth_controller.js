@@ -32,7 +32,9 @@ const register = async (req, res) => {
         res.send({
             status: 'success',
             data: {
-                user,
+                email: validData.email,
+                first_name: validData.first_name,
+                last_name: validData.last_name
             },
         });
 
