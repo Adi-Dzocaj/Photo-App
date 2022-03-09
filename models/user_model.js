@@ -1,4 +1,3 @@
-
 const bcrypt = require('bcrypt');
 
 module.exports = (bookshelf) => {
@@ -7,8 +6,8 @@ module.exports = (bookshelf) => {
 		photos() {
 			return this.hasMany('Photo');
 		},
-    albums() {
-		return this.hasMany('Album');
+		albums() {
+			return this.hasMany('Album');
     }
 	}, {
 		async login(email, password) {

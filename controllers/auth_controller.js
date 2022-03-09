@@ -62,7 +62,7 @@ const login = async (req, res) => {
 
     return res.status(200).send({
         status: 'success',
-        data: user
+        data: "Login successful!"
     });
 };
 

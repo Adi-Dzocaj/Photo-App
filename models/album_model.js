@@ -1,13 +1,11 @@
 module.exports = (bookshelf) => {
-	return bookshelf.model(
-		'Album', 
-		{
+	return bookshelf.model('Album', {
 		tableName: 'Albums',
 		users() {
 			return this.belongsTo('User');
 		},
 		photos() {
-			return this.belongsToMany('Photos')
+			return this.belongsToMany('Photo')
 		}},
 		{
             async fetchById(id, fetchOptions = {}) {
