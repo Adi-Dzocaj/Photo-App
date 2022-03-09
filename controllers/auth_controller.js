@@ -45,6 +45,26 @@ const register = async (req, res) => {
     }
 }
 
+const login = async (req, res) => {
+    const { email, password } = req.body
+
+    // login user
+    const user = await models.user_model.login(email, password);
+    
+    if (!user) {
+        return res.status(401).send({
+            status: "fail",
+            data: "Authentication failed.",
+        });
+    }
+
+    return res.status(200).send({
+        status: 'success',
+        data: user
+    });
+};
+
 module.exports = {
     register,
+    login
 }

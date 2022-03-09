@@ -7,6 +7,9 @@ const userValidationRules = require('../validation/user_validation')
 // Registration route
 router.post('/register', userValidationRules.createRules, authController.register)
 
+// Login route
+router.post('/login', authController.login)
+
 // User route
 router.use('/user', auth.basic, require('./user_route'));
 
