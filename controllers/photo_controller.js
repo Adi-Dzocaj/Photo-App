@@ -2,21 +2,7 @@ const debug = require('debug')('photoapp:user_controller');
 const { matchedData, validationResult } = require('express-validator');
 const models = require('../models');
 
-// GET AUTHENTICATED USERS PHOTOS
-const getPhotos = async (req, res) => {
-    const user = await models.user_model.fetchById(req.user.id, {withRelated: ['photos']});
-
-    res.status(200).send({
-        status: 'success',
-        id: {
-            id: user.id
-        },
-        data: {
-            photos: user.related('photos')
-        }
-    })
-}
-
+// /POST - create a new photo
 const addPhoto = async (req, res) => {
 	// check for any validation errors
 	const errors = validationResult(req);
@@ -47,7 +33,22 @@ const addPhoto = async (req, res) => {
 	}
 };
 
-// PUT (update) a photo
+// /GET - read all the photos of a user
+const getPhotos = async (req, res) => {
+    const user = await models.user_model.fetchById(req.user.id, {withRelated: ['photos']});
+
+    res.status(200).send({
+        status: 'success',
+        id: {
+            id: user.id
+        },
+        data: {
+            photos: user.related('photos')
+        }
+    })
+}
+
+// PUT - update a user's photo
 const updatePhoto = async (req, res) => {
 
 	const photoId = req.params.photoId;
@@ -85,7 +86,7 @@ const updatePhoto = async (req, res) => {
 	} catch (error) {
     res.status(500).send({
 		status: 'error',
-		message: 'Exception thrown in database when updating a new photo.',
+		message: 'Exception thrown in database when updating a photo.',
     });
     throw error;
 	}

@@ -7,4 +7,7 @@ router.get('/', albumController.getAlbums);
 
 router.post('/', albumValidationRules.createRules, albumController.addAlbum);
 
+// Update users album
+router.put('/:albumId', albumValidationRules.updateRules, albumController.updateAlbum)
+
 module.exports = router;

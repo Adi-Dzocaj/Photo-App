@@ -4,6 +4,11 @@ const createRules = [
     body('title').exists().isLength({ min: 3})
 ]
 
+const updateRules = [
+	body('title').optional().isLength({ min: 3 })
+]
+
 module.exports = {
     createRules,
+	updateRules
 }
