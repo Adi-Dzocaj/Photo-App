@@ -168,7 +168,7 @@ const addPhotoToAlbum = async (req, res) => {
 		
 		res.send({
 			status: 'success',
-			data: `Photo with id: ${validData.photo_id} was successfully placed into album with id ${req.params.albumId}`,
+			data: `Photo with id: ${validData.photo_id} was successfully placed into album with id: ${req.params.albumId}`,
 		});
 
 	} catch (error) {
