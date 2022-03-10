@@ -7,6 +7,10 @@ const userValidationRules = require('../validation/user_validation')
 // Registration route
 router.post('/register', userValidationRules.createRules, authController.register)
 
+router.get('/', (req, res, next) => {
+    res.send({ success: true, data: { msg: 'Hello, it works! '}})
+})
+
 // Login route
 router.post('/login', authController.login)
 
