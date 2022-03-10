@@ -10,9 +10,6 @@ router.post('/register', userValidationRules.createRules, authController.registe
 // Login route
 router.post('/login', authController.login)
 
-// User route
-router.use('/user', auth.basic, require('./user_route'));
-
 // Photo route
 router.use('/photos', auth.basic, require('./photo_route'));
 
