@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const debug = require('debug')('photoapp:register_controller');
+const debug = require('debug')('photoapp:auth_controller');
 const { matchedData, validationResult } = require('express-validator');
 const models = require('../models');
 
@@ -29,7 +29,7 @@ const register = async (req, res) => {
         const user = await new models.user_model(validData).save();
         debug("Created new user successfully: %O", user);
 
-        res.send({
+        res.status(200).send({
             status: 'success',
             data: {
                 email: validData.email,

@@ -1,4 +1,4 @@
-const debug = require('debug')('photoapp:user_controller');
+const debug = require('debug')('photoapp:album_controller');
 const { matchedData, validationResult } = require('express-validator');
 const models = require('../models');
 
@@ -18,7 +18,7 @@ const addAlbum = async (req, res) => {
 	try {
 		const album = await new models.album_model(validData).save();
 		debug('Created new album: %O', album);
-		res.send({
+		res.status(200).send({
 			status: 'success',
 			data: {
 				result: album,
@@ -66,7 +66,7 @@ const getTargetedAlbum = async (req, res) => {
 		});
 	}
 
-	res.send({
+	res.status(200).send({
 		status: 'success',
 		data: {
 			album: albumContent
@@ -103,7 +103,7 @@ const updateAlbum = async (req, res) => {
 	try {
     await album.save(validData);
 
-    res.send({
+    res.status(200).send({
     status: 'success',
     data: {
         album
@@ -140,14 +140,14 @@ const addPhotoToAlbum = async (req, res) => {
 
 	const photoExists = album.related('photos').find(photo => photo.id == validData.photo_id);
 	if (photoExists) {
-		return res.send({
+		return res.status(403).send({
 			status: 'fail',
 			data: "This photo is already in the album"
 		});
 	}
 
 	if (!userAlbum) {
-		res.status(403).send({
+		res.status(404).send({
 			status: 'fail',
 			data: "The album you wanted to insert the photo into, couldn't be found"
 		});
@@ -155,7 +155,7 @@ const addPhotoToAlbum = async (req, res) => {
 	}
 
 	if (!userPhoto) {
-		res.status(403).send({
+		res.status(404).send({
 			status: 'fail',
 			data: "The photo you wanted to put in the album couldn't be found"
 		});
@@ -166,7 +166,7 @@ const addPhotoToAlbum = async (req, res) => {
 
 		await album.photos().attach(validData.photo_id);
 		
-		res.send({
+		res.status(200).send({
 			status: 'success',
 			data: `Photo with id: ${validData.photo_id} was successfully placed into album with id: ${req.params.albumId}`,
 		});
@@ -181,9 +181,9 @@ const addPhotoToAlbum = async (req, res) => {
 }
 
 module.exports = {
-    getAlbums,
     addAlbum,
+	getAlbums,
+	getTargetedAlbum,
 	updateAlbum,
-	addPhotoToAlbum,
-	getTargetedAlbum
+	addPhotoToAlbum
 }

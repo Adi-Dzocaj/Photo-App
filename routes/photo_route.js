@@ -9,6 +9,9 @@ router.post('/', photoValidationRules.createRules, photoController.addPhoto)
 // Get users photos
 router.get('/', photoController.getPhotos)
 
+// Get a specific user photo
+router.get('/:photoId', photoController.getTargetedPhoto)
+
 // Update users photo
 router.put('/:photoId', photoValidationRules.updateRules, photoController.updatePhoto )
 
