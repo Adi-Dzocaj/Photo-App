@@ -48,6 +48,32 @@ const getAlbums = async (req, res) => {
     })
 }
 
+// /GET - read a specific album of a user and his/her photos, in that album
+const getTargetedAlbum = async (req, res) => {
+	// fetch user and eager-load albums relation
+	const user = await models.user_model.fetchById(req.user.id, { withRelated: ['albums'] });
+
+	// get the authorized users albums and search for the one with the requested /:albumId
+	const userAlbum = user.related('albums').find(album => album.id == req.params.albumId);
+
+	// get the album and it's photo relation
+	const albumContent = await models.album_model.fetchById(req.params.albumId, {withRelated: ['photos']});
+
+	if (!userAlbum) {
+		return res.status(404).send({
+			status: 'fail',
+			message: `Album with id ${req.params.albumId} couldn't be found`,
+		});
+	}
+
+	res.send({
+		status: 'success',
+		data: {
+			album: albumContent
+		}
+	});
+};
+
 // PUT - update a user's album
 const updateAlbum = async (req, res) => {
 
@@ -99,7 +125,7 @@ const addPhotoToAlbum = async (req, res) => {
 	if (!errors.isEmpty()) {
 		return res.status(422).send({ status: 'fail', data: errors.array() });
 	}
-	
+
 	// get only the validated data from the request
 	const validData = matchedData(req);
 
@@ -158,5 +184,6 @@ module.exports = {
     getAlbums,
     addAlbum,
 	updateAlbum,
-	addPhotoToAlbum
+	addPhotoToAlbum,
+	getTargetedAlbum
 }

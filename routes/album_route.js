@@ -5,6 +5,8 @@ const albumValidationRules = require('../validation/album_validation')
 
 router.get('/', albumController.getAlbums);
 
+router.get('/:albumId', albumController.getTargetedAlbum)
+
 router.post('/', albumValidationRules.createRules, albumController.addAlbum);
 
 router.put('/:albumId', albumValidationRules.updateRules, albumController.updateAlbum)
