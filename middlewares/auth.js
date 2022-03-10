@@ -15,11 +15,9 @@ const basic = async (req, res, next) => {
         });
     }
 
-    debug("Authorization header: %o", req.headers.authorization); // %o är en placeholder för den efterföljande parametern som jag skickar med. 
+    debug("Authorization header: %o", req.headers.authorization); // %o is a placeholder for the trailing parameter that follows
 
-    // spilt header into "<authSchema> <base64Payload>"
-    // [0] = "Basic"
-    // [1] = "koden som omvandlat användarnamn och lösenord"
+    // split header into "<authSchema> <base64Payload>"
     const [authSchema, base64Payload] = req.headers.authorization.split(' ');
 
     // if authSchema is not Basic then bail
@@ -32,11 +30,11 @@ const basic = async (req, res, next) => {
         });
     }
 
-    // decode payload from base64 to ascii. Först sparas innehållet från base64Payload i en Buffer, och sedan gör jag om detta till en sträng och talar om att det ska skrivas i ascii. 
+    // decode payload from base64 to ascii. I save the content from base64Payload in a Buffer and then convert it into a string and instruct that it should be written in ascii.
     const decodedPayload = Buffer.from(base64Payload, 'base64').toString('ascii'); // decodedPayload = "email:password"
 
     // split decoded payload into "<email>:<password>"
-    const [email, password] = decodedPayload.split(':'); // här splittas det som finns i decodedPayload och delas av med :
+    const [email, password] = decodedPayload.split(':');
     
     // find the user that is being requested based on the email
     const user = await new user_model({ email }).fetch({ require: false });
